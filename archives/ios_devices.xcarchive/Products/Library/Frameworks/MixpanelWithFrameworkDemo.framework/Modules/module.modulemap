@@ -1,0 +1,11 @@
+framework module MixpanelWithFrameworkDemo {
+  umbrella header "MixpanelWithFrameworkDemo.h"
+
+  export *
+  module * { export * }
+}
+
+module MixpanelWithFrameworkDemo.Swift {
+  header "MixpanelWithFrameworkDemo-Swift.h"
+  requires objc
+}

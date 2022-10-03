@@ -1,0 +1,194 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7 (swiftlang-5.7.0.127.4 clang-1400.0.29.50)
+// swift-module-flags: -target arm64-apple-ios9.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Mixpanel
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import CoreTelephony
+import Foundation
+@_exported import Mixpanel
+import SQLite3
+import StoreKit
+import Swift
+import SystemConfiguration
+import UIKit
+import _Concurrency
+import _StringProcessing
+@_hasMissingDesignatedInitializers open class Group {
+  open func set(properties: Mixpanel.Properties)
+  open func set(property: Swift.String, to: Mixpanel.MixpanelType)
+  open func setOnce(properties: Mixpanel.Properties)
+  open func unset(property: Swift.String)
+  open func remove(key: Swift.String, value: Mixpanel.MixpanelType)
+  open func union(key: Swift.String, values: [Mixpanel.MixpanelType])
+  open func deleteGroup()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers open class Mixpanel {
+  @discardableResult
+  open class func initialize(token apiToken: Swift.String, trackAutomaticEvents: Swift.Bool, flushInterval: Swift.Double = 60, instanceName: Swift.String? = nil, optOutTrackingByDefault: Swift.Bool = false, useUniqueDistinctId: Swift.Bool = false, superProperties: Mixpanel.Properties? = nil, serverURL: Swift.String? = nil) -> Mixpanel.MixpanelInstance
+  open class func getInstance(name: Swift.String) -> Mixpanel.MixpanelInstance?
+  open class func mainInstance() -> Mixpanel.MixpanelInstance
+  open class func setMainInstance(name: Swift.String)
+  open class func removeInstance(name: Swift.String)
+  @objc deinit
+}
+public protocol MixpanelDelegate : AnyObject {
+  func mixpanelWillFlush(_ mixpanel: Mixpanel.MixpanelInstance) -> Swift.Bool
+}
+public typealias Properties = [Swift.String : Mixpanel.MixpanelType]
+@_hasMissingDesignatedInitializers open class MixpanelInstance : Swift.CustomDebugStringConvertible {
+  open var apiToken: Swift.String
+  weak open var delegate: Mixpanel.MixpanelDelegate?
+  open var distinctId: Swift.String
+  open var anonymousId: Swift.String?
+  open var userId: Swift.String?
+  open var hadPersistedDistinctId: Swift.Bool?
+  open var alias: Swift.String?
+  open var people: Mixpanel.People!
+  open var showNetworkActivityIndicator: Swift.Bool
+  open var trackAutomaticEventsEnabled: Swift.Bool
+  open var flushInterval: Swift.Double {
+    get
+    set
+  }
+  open var flushOnBackground: Swift.Bool {
+    get
+    set
+  }
+  open var useIPAddressForGeoLocation: Swift.Bool {
+    get
+    set
+  }
+  open var serverURL: Swift.String {
+    get
+    set
+  }
+  open var debugDescription: Swift.String {
+    get
+  }
+  open var loggingEnabled: Swift.Bool {
+    get
+    set
+  }
+  final public let name: Swift.String
+  open var minimumSessionDuration: Swift.UInt64 {
+    get
+    set
+  }
+  open var maximumSessionDuration: Swift.UInt64 {
+    get
+    set
+  }
+  @objc deinit
+}
+extension Mixpanel.MixpanelInstance {
+  open func identify(distinctId: Swift.String, usePeople: Swift.Bool = true, completion: (() -> Swift.Void)? = nil)
+  open func createAlias(_ alias: Swift.String, distinctId: Swift.String, usePeople: Swift.Bool = true, andIdentify: Swift.Bool = true, completion: (() -> Swift.Void)? = nil)
+  open func reset(completion: (() -> Swift.Void)? = nil)
+}
+extension Mixpanel.MixpanelInstance {
+  open func archive()
+}
+extension Mixpanel.MixpanelInstance {
+  open func flush(completion: (() -> Swift.Void)? = nil)
+}
+extension Mixpanel.MixpanelInstance {
+  open func track(event: Swift.String?, properties: Mixpanel.Properties? = nil)
+  open func trackWithGroups(event: Swift.String?, properties: Mixpanel.Properties? = nil, groups: Mixpanel.Properties?)
+  open func getGroup(groupKey: Swift.String, groupID: Mixpanel.MixpanelType) -> Mixpanel.Group
+  open func time(event: Swift.String)
+  open func eventElapsedTime(event: Swift.String) -> Swift.Double
+  open func clearTimedEvents()
+  open func clearTimedEvent(event: Swift.String)
+  open func currentSuperProperties() -> [Swift.String : Any]
+  open func clearSuperProperties()
+  open func registerSuperProperties(_ properties: Mixpanel.Properties)
+  open func registerSuperPropertiesOnce(_ properties: Mixpanel.Properties, defaultValue: Mixpanel.MixpanelType? = nil)
+  open func unregisterSuperProperty(_ propertyName: Swift.String)
+  open func setGroup(groupKey: Swift.String, groupID: Mixpanel.MixpanelType)
+  open func setGroup(groupKey: Swift.String, groupIDs: [Mixpanel.MixpanelType])
+  open func addGroup(groupKey: Swift.String, groupID: Mixpanel.MixpanelType)
+  open func removeGroup(groupKey: Swift.String, groupID: Mixpanel.MixpanelType)
+  open func optOutTracking()
+  open func optInTracking(distinctId: Swift.String? = nil, properties: Mixpanel.Properties? = nil)
+  open func hasOptedOutTracking() -> Swift.Bool
+}
+public protocol MixpanelType {
+  func isValidNestedTypeAndValue() -> Swift.Bool
+  func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Optional : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.String : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.NSString : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.NSNumber : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Int : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.UInt : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Double : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Float : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Bool : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.Date : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.URL : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.NSNull : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Array : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Foundation.NSArray : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+extension Swift.Dictionary : Mixpanel.MixpanelType {
+  public func isValidNestedTypeAndValue() -> Swift.Bool
+  public func equals(rhs: Mixpanel.MixpanelType) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers open class People {
+  open var ignoreTime: Swift.Bool
+  open func set(properties: Mixpanel.Properties)
+  open func set(property: Swift.String, to: Mixpanel.MixpanelType)
+  open func setOnce(properties: Mixpanel.Properties)
+  open func unset(properties: [Swift.String])
+  open func increment(properties: Mixpanel.Properties)
+  open func increment(property: Swift.String, by: Swift.Double)
+  open func append(properties: Mixpanel.Properties)
+  open func remove(properties: Mixpanel.Properties)
+  open func union(properties: Mixpanel.Properties)
+  open func trackCharge(amount: Swift.Double, properties: Mixpanel.Properties? = nil)
+  open func clearCharges()
+  open func deleteUser()
+  @objc deinit
+}
